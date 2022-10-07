@@ -28,9 +28,9 @@ const getId = async (req, res) => {
 const create = async (req, res) => {
     try {
         const response = await userRepo.createUsers(req.body);
-        console.log(response);
         res.status(201).json({
-            result: response,
+            result: response.command,
+            respone: "successfully created account.",
         });
     } catch (err) {
         res.status(500).json({ msg: "Internal Server Error" });

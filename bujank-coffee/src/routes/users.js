@@ -5,7 +5,7 @@ const { get, getId, create } = require("../controllers/users");
 
 userRouter.get("/", get);
 userRouter.get("/:id", getId);
-userRouter.post("/", create);
+userRouter.post("/signup", create);
 
 // testing router
 // userRouter.get("/", (req, res) => {
