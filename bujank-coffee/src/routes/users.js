@@ -1,11 +1,12 @@
 const express = require("express");
 const userRouter = express.Router();
 
-const { get, getId, create } = require("../controllers/users");
+const { get, getId, create, editProfile } = require("../controllers/users");
 
 userRouter.get("/", get);
 userRouter.get("/:id", getId);
 userRouter.post("/signup", create);
+userRouter.patch("/:id", editProfile);
 
 // testing router
 // userRouter.get("/", (req, res) => {

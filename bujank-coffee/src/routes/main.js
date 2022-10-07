@@ -2,6 +2,7 @@ const express = require("express");
 
 // import router
 const usersRouter = require("./users");
+const productsRouter = require("./products");
 const promosRouter = require("./promos");
 const transactionRouter = require("./transactions.js");
 
@@ -12,6 +13,7 @@ const prefix = "/api";
 
 // hubungkan subrouter
 mainRouter.use(`${prefix}/user`, usersRouter);
+mainRouter.use(`${prefix}/products`, productsRouter);
 mainRouter.use(`${prefix}/promo`, promosRouter);
 mainRouter.use(`${prefix}/transaction`, transactionRouter);
 
