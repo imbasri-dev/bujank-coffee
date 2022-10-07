@@ -17,6 +17,10 @@ postgresDb
         server.use(express.json());
         server.use(express.urlencoded({ extended: false }));
 
+        // pasang parser untuk body
+        server.use(express.json());
+        server.use(express.urlencoded({ extended: false }));
+
         // user router mainRouter
         server.use(mainRouter);
         // server ready menerima request di port
