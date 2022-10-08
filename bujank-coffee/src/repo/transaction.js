@@ -1,9 +1,8 @@
 const postgresDb = require("../config/postgre");
-// get all user
 
-const getProduct = () => {
+const getTransaction = () => {
     return new Promise((resolve, reject) => {
-        const query = "select * from products";
+        const query = "select * from transactions";
         postgresDb.query(query, (err, result) => {
             if (err) {
                 console.log(err);
@@ -13,47 +12,36 @@ const getProduct = () => {
         });
     });
 };
-
-const getCategory = (params) => {
+const addTransaction = (body) => {
     return new Promise((resolve, reject) => {
         const query =
-            "select * from products where lower(category) = lower($1)";
-        postgresDb.query(query, [params.category], (err, queryResult) => {
-            if (err) {
-                console.log(err);
-                return reject(err);
-            }
-            return resolve(queryResult);
-        });
-    });
-};
-
-const addProduct = (body) => {
-    return new Promise((resolve, reject) => {
-        const query =
-            "insert into products (title,price,category,size,product_img,description,stock,promos_id) values ($1,$2,$3,$4,$5,$6,$7,$8)";
+            "insert into transactions (user_id,product_id,promo_id,quantity,payment_method,order_time,status,tax,shipping_payment,total) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)";
         const {
-            title,
-            price,
-            category,
-            size,
-            product_img,
-            description,
-            stock,
-            promos_id,
+            user_id,
+            product_id,
+            promo_id,
+            quantity,
+            payment_method,
+            order_time,
+            status,
+            tax,
+            shipping_payment,
+            total,
         } = body;
 
         postgresDb.query(
             query,
             [
-                title,
-                price,
-                category,
-                size,
-                product_img,
-                description,
-                stock,
-                promos_id,
+                user_id,
+                product_id,
+                promo_id,
+                quantity,
+                payment_method,
+                order_time,
+                status,
+                tax,
+                shipping_payment,
+                total,
             ],
             (err, queryResult) => {
                 if (err) {
@@ -66,9 +54,9 @@ const addProduct = (body) => {
     });
 };
 
-const update = (body, params) => {
+const edit = (body, params) => {
     return new Promise((resolve, reject) => {
-        let query = "update products set ";
+        let query = "update transactions set ";
         const values = [];
         Object.keys(body).forEach((key, index, array) => {
             if (index === array.length - 1) {
@@ -94,21 +82,17 @@ const update = (body, params) => {
 
 const deleted = (params) => {
     return new Promise((resolve, reject) => {
-        const query = "delete from products where id = $1";
+        const query = "delete from transactions where id = $1";
         postgresDb.query(query, [params.id], (err, queryResult) => {
             if (err) {
                 console.log(err);
-                reject(err);
+                return reject(err);
             }
-            resolve(queryResult);
+            return resolve(queryResult);
         });
     });
 };
-const productRepo = {
-    getProduct,
-    getCategory,
-    addProduct,
-    update,
-    deleted,
-};
-module.exports = productRepo;
+
+const transactionRepo = { getTransaction, addTransaction, edit, deleted };
+
+module.exports = transactionRepo;

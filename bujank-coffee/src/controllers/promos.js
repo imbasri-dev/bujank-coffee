@@ -25,6 +25,21 @@ const getId = async (req, res) => {
     }
 };
 
+const addPromo = async (req, res) => {
+    try {
+        const response = await promosRepo.create(req.body);
+        res.status(201).json({
+            data: response.command,
+            msg: (response.text = "Create data successful"),
+            status: (response.status = 201),
+        });
+    } catch (err) {
+        res.status(500).json({
+            msg: "Internal Server Error",
+        });
+    }
+};
+
 const editPromo = async (req, res) => {
     try {
         const respone = await promosRepo.update(req.body, req.params);
@@ -40,9 +55,28 @@ const editPromo = async (req, res) => {
         });
     }
 };
+
+const deleted = async (req, res) => {
+    try {
+        const response = await promosRepo.deleted(req.params);
+
+        return res.status(200).json({
+            data: response.command,
+            msg: (response.text = "Delete successful"),
+            status: (response.status = 202),
+        });
+    } catch (err) {
+        return res.status(500).json({
+            msg: "Internal Server Error",
+            status: (err.status = 500),
+        });
+    }
+};
 const promosController = {
     get,
     getId,
+    addPromo,
     editPromo,
+    deleted,
 };
 module.exports = promosController;

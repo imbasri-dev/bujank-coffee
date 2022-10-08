@@ -16,10 +16,9 @@ mainRouter.use(`${prefix}/user`, usersRouter);
 mainRouter.use(`${prefix}/product`, productsRouter);
 mainRouter.use(`${prefix}/promo`, promosRouter);
 mainRouter.use(`${prefix}/transaction`, transactionRouter);
-
 mainRouter.get("/", (req, res) => {
     res.json({
-        msg: "Welcome!",
+        msg: "Welcome! Bujank Coffee",
     });
 });
 

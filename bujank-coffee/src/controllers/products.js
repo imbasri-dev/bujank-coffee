@@ -40,7 +40,21 @@ const create = async (req, res) => {
         });
     }
 };
-
+const edit = async (req, res) => {
+    try {
+        const response = await productRepo.update(req.body, req.params);
+        res.status(200).json({
+            data: response.command,
+            msg: (response.text = "data changed successfully"),
+            status: (response.status = 202),
+        });
+    } catch (err) {
+        res.status(500).json({
+            debug: console.log(err),
+            msg: "Internal server Error",
+        });
+    }
+};
 const deleted = async (req, res) => {
     try {
         const response = await productRepo.deleted(req.params);
@@ -48,6 +62,7 @@ const deleted = async (req, res) => {
         return res.status(200).json({
             data: response.command,
             msg: (response.text = "Delete successful"),
+            status: (response.status = 202),
         });
     } catch (err) {
         return res.status(500).json({
@@ -60,6 +75,7 @@ const productController = {
     get,
     getProductCategory,
     create,
+    edit,
     deleted,
 };
 module.exports = productController;

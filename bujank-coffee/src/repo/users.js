@@ -58,7 +58,7 @@ const editUsers = (body, params) => {
         Object.keys(body).forEach((key, idx, array) => {
             if (idx === array.length - 1) {
                 query += `${key} = $${idx + 1} where id = $${idx + 2}`;
-                values.push(body[key], params);
+                values.push(body[key], params.id);
                 return;
             }
             query += `${key} = $${idx + 1},`;
@@ -79,10 +79,23 @@ const editUsers = (body, params) => {
             });
     });
 };
+const deleted = (params) => {
+    return new Promise((resolve, reject) => {
+        const query = "delete from users where id = $1";
+        postgresDb.query(query, [params.id], (err, queryResult) => {
+            if (err) {
+                console.log(err);
+                return reject(err);
+            }
+            return resolve(queryResult);
+        });
+    });
+};
 const usersRepo = {
     getUsers,
     getUsersId,
     createUsers,
     editUsers,
+    deleted,
 };
 module.exports = usersRepo;

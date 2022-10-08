@@ -25,13 +25,29 @@ const getPromoId = (params) => {
     });
 };
 
+const create = (body) => {
+    return new Promise((resolve, reject) => {
+        const query =
+            "insert into promos (code_voucher,label,discount,valid) values (upper($1),upper($2),$3,$4)";
+        const { code_voucher, label, discount, valid } = body;
+        postgresDb.query(
+            query,
+            [code_voucher, label, discount, valid],
+            (err, queryResult) => {
+                if (err) {
+                    console.log(err);
+                    return reject(err);
+                }
+                return resolve(queryResult);
+            }
+        );
+    });
+};
+
 const update = (body, params) => {
     return new Promise((resolve, reject) => {
         let query = "update promos set ";
         const values = [];
-        // {author, title, publisher}
-        // logika ini dibuat dengan mengasumsikan ada middleware validasi
-        // validasi untuk menghilangkan properti object dari body yang tidak diinginkan
         Object.keys(body).forEach((key, index, array) => {
             if (index === array.length - 1) {
                 query += `${key} = $${index + 1} where id = $${index + 2}`;
@@ -39,12 +55,9 @@ const update = (body, params) => {
                 return;
             }
             query += `${key} = $${index + 1},`;
-            values.push(body[key]);
+            values.push(body[key].toUpperCase());
         });
-        //   res.json({
-        //     query,
-        //     values,
-        //   });
+        console.log(values);
         postgresDb
             .query(query, values)
             .then((response) => {
@@ -56,9 +69,23 @@ const update = (body, params) => {
             });
     });
 };
+const deleted = (params) => {
+    return new Promise((resolve, reject) => {
+        const query = "delete from promos where id = $1";
+        postgresDb.query(query, [params.id], (err, queryResult) => {
+            if (err) {
+                console.log(err);
+                return reject(err);
+            }
+            return resolve(queryResult);
+        });
+    });
+};
 const promoRepo = {
     getPromo,
     getPromoId,
+    create,
     update,
+    deleted,
 };
 module.exports = promoRepo;

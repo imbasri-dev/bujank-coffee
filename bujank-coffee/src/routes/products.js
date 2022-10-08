@@ -4,13 +4,15 @@ const {
     get,
     getProductCategory,
     create,
+    edit,
     deleted,
 } = require("../controllers/products");
 
 productsRouter.get("/", get);
 productsRouter.get("/:category", getProductCategory);
 productsRouter.post("/add", create);
-productsRouter.delete("/delete/:id", deleted);
+productsRouter.patch("/:id", edit);
+productsRouter.delete("/:id", deleted);
 
 // productsRouter.get("/", (req, res) => {
 //     res.json({
