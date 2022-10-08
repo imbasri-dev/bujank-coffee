@@ -15,11 +15,10 @@ const getTransaction = () => {
 const addTransaction = (body) => {
     return new Promise((resolve, reject) => {
         const query =
-            "insert into transactions (user_id,product_id,promo_id,quantity,payment_method,order_time,status,tax,shipping_payment,total) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)";
+            "insert into transactions (user_id,product_id,quantity,payment_method,order_time,status,tax,shipping_payment,total) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)";
         const {
             user_id,
             product_id,
-            promo_id,
             quantity,
             payment_method,
             order_time,
@@ -34,7 +33,6 @@ const addTransaction = (body) => {
             [
                 user_id,
                 product_id,
-                promo_id,
                 quantity,
                 payment_method,
                 order_time,
