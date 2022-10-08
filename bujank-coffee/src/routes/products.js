@@ -1,9 +1,16 @@
 const express = require("express");
 const productsRouter = express.Router();
-const { get, getId } = require("../controllers/products");
+const {
+    get,
+    getProductCategory,
+    create,
+    deleted,
+} = require("../controllers/products");
 
 productsRouter.get("/", get);
-productsRouter.get("/:id", getId);
+productsRouter.get("/:category", getProductCategory);
+productsRouter.post("/add", create);
+productsRouter.delete("/delete/:id", deleted);
 
 // productsRouter.get("/", (req, res) => {
 //     res.json({

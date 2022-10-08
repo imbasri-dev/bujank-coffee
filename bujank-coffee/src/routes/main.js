@@ -13,7 +13,7 @@ const prefix = "/api";
 
 // hubungkan subrouter
 mainRouter.use(`${prefix}/user`, usersRouter);
-mainRouter.use(`${prefix}/products`, productsRouter);
+mainRouter.use(`${prefix}/product`, productsRouter);
 mainRouter.use(`${prefix}/promo`, promosRouter);
 mainRouter.use(`${prefix}/transaction`, transactionRouter);
 
