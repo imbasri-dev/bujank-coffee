@@ -86,7 +86,7 @@ FROM transactions
 FULL JOIN users ON transactions.id = users.id
 FULL JOIN products ON transactions.id = products.id
 FULL JOIN promos ON products.id = promos.id
-WHERE products.category = $1 AND users.id = transactions.id`;
+WHERE products.category = $1 AND users.id = transactions.id order by transaction_date asc `;
         postgresDb.query(query, [params.category], (err, queryResult) => {
             if (err) {
                 console.log(err);

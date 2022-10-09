@@ -69,12 +69,11 @@ const addProduct = (body) => {
 const searchProductPromo = (queryParams) => {
     return new Promise((resolve, reject) => {
         const query =
-            "select * from products full join promos on products.id = promos.id where lower(title) like lower($1) and lower(promos.code_voucher) like lower ($2)";
+            "select * from products full join promos on products.promos_id = promos.id where lower(title) like lower($1) and lower(promos.code_voucher) like lower ($2)";
         const values = [
             `%${queryParams.title}%`,
             `%${queryParams.code_voucher}%`,
         ];
-        console.log(values);
         postgresDb.query(query, values, (err, queryResult) => {
             if (err) {
                 console.log(err);
