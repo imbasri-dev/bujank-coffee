@@ -5,7 +5,6 @@ const usersRouter = require("./users");
 const productsRouter = require("./products");
 const promosRouter = require("./promos");
 const transactionRouter = require("./transactions.js");
-
 // main router
 const mainRouter = express.Router();
 

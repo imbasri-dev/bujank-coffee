@@ -9,7 +9,7 @@ const {
     searchProductPromo,
 } = require("../controllers/products");
 
-// productsRouter.get("/", get);
+productsRouter.get("/product", get); //get all products
 productsRouter.get("/:category", getProductCategory);
 productsRouter.get("/", searchProductPromo);
 productsRouter.post("/add", create);
