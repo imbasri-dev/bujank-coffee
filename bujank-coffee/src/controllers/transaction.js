@@ -42,6 +42,19 @@ const edit = async (req, res) => {
         });
     }
 };
+const getTransactionCategory = async (req, res) => {
+    console.log(req.params);
+    try {
+        const response = await transactionRepo.getCategory(req.params);
+        res.status(200).json({
+            data: response.rows,
+        });
+    } catch (err) {
+        res.status(500).json({
+            msg: "Internal Server Error",
+        });
+    }
+};
 const deleted = async (req, res) => {
     try {
         const response = await transactionRepo.deleted(req.params);
@@ -59,6 +72,7 @@ const transactionController = {
     get,
     add,
     edit,
+    getTransactionCategory,
     deleted,
 };
 module.exports = transactionController;

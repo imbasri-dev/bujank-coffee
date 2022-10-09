@@ -57,7 +57,6 @@ const update = (body, params) => {
             query += `${key} = $${index + 1},`;
             values.push(body[key].toUpperCase());
         });
-        console.log(values);
         postgresDb
             .query(query, values)
             .then((response) => {
@@ -67,6 +66,21 @@ const update = (body, params) => {
                 console.log(err);
                 reject(err);
             });
+    });
+};
+
+const search = (queryParams) => {
+    return new Promise((resolve, reject) => {
+        const query =
+            "select * from promos where lower(code_voucher) like lower($1)";
+        const values = [`%${queryParams.code_voucher}%`];
+        postgresDb.query(query, values, (err, queryResult) => {
+            if (err) {
+                console.log(err);
+                return reject(err);
+            }
+            return resolve(queryResult);
+        });
     });
 };
 const deleted = (params) => {
@@ -86,6 +100,7 @@ const promoRepo = {
     getPromoId,
     create,
     update,
+    search,
     deleted,
 };
 module.exports = promoRepo;

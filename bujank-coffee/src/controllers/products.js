@@ -1,4 +1,3 @@
-const { response } = require("express");
 const productRepo = require("../repo/products");
 
 const get = async (req, res) => {

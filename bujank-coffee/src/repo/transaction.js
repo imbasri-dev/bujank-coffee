@@ -3,7 +3,7 @@ const postgresDb = require("../config/postgre");
 const getTransaction = () => {
     return new Promise((resolve, reject) => {
         const query =
-            "SELECT transactions.id,users.email,users.phones , users.address ,order_time,payment_method ,status,transaction_date ,quantity ,products.price,shipping_payment,tax , ((total*0) + (price * quantity +shipping_payment + tax)) AS total FROM transactions FULL JOIN users ON transactions.id = users.id FULL JOIN products ON transactions.id = products.id ORDER BY transactions.id asc";
+            "SELECT transactions.id,users.email,users.phones , users.address ,order_time,payment_method ,status,transaction_date ,quantity ,products.price,shipping_payment,tax , ((total*0) + (price * quantity +shipping_payment + tax)) AS total FROM transactions FULL JOIN users ON transactions.id = users.id FULL JOIN products ON transactions.id = products.id where transactions.id = users.id ORDER BY transactions.id asc";
         postgresDb.query(query, (err, result) => {
             if (err) {
                 console.log(err);
@@ -79,6 +79,24 @@ const edit = (body, params) => {
     });
 };
 
+const getCategory = (params) => {
+    return new Promise((resolve, reject) => {
+        const query = `SELECT transactions.id,users.email,users.phones , users.address ,order_time,payment_method ,promos.code_voucher  ,status,transaction_date ,quantity,products.price,(transactions.quantity * (products.price * promos.discount/100)) AS discount, (products.price * transactions.quantity) AS sub_total ,shipping_payment,tax ,(price * transactions.quantity +tax + shipping_payment - (transactions.quantity * (products.price * promos.discount/100)) ) AS total
+FROM transactions
+FULL JOIN users ON transactions.id = users.id
+FULL JOIN products ON transactions.id = products.id
+FULL JOIN promos ON products.id = promos.id
+WHERE products.category = $1 AND users.id = transactions.id`;
+        postgresDb.query(query, [params.category], (err, queryResult) => {
+            if (err) {
+                console.log(err);
+                return reject(err);
+            }
+            return resolve(queryResult);
+        });
+    });
+};
+
 const deleted = (params) => {
     return new Promise((resolve, reject) => {
         const query = "delete from transactions where id = $1";
@@ -92,6 +110,12 @@ const deleted = (params) => {
     });
 };
 
-const transactionRepo = { getTransaction, addTransaction, edit, deleted };
+const transactionRepo = {
+    getTransaction,
+    addTransaction,
+    edit,
+    getCategory,
+    deleted,
+};
 
 module.exports = transactionRepo;

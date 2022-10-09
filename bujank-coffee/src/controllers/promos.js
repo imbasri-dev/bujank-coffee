@@ -56,6 +56,18 @@ const editPromo = async (req, res) => {
     }
 };
 
+const searchPromo = async (req, res) => {
+    try {
+        const response = await promosRepo.search(req.query);
+        res.status(200).json({
+            data: response.rows,
+        });
+    } catch (err) {
+        res.status(500).json({
+            msg: "Internal Server Error",
+        });
+    }
+};
 const deleted = async (req, res) => {
     try {
         const response = await promosRepo.deleted(req.params);
@@ -72,11 +84,13 @@ const deleted = async (req, res) => {
         });
     }
 };
+
 const promosController = {
     get,
     getId,
     addPromo,
     editPromo,
+    searchPromo,
     deleted,
 };
 module.exports = promosController;

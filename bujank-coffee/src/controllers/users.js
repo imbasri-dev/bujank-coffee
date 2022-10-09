@@ -32,18 +32,24 @@ const create = async (req, res) => {
         res.status(201).json({
             data: response.command,
             respone: "successfully created account.",
+            status: (response.status = 201),
         });
     } catch (err) {
-        res.status(500).json({ msg: "Internal Server Error" });
+        console.log(err);
+        res.status(406).json({
+            msg: err.detail,
+            status: (err.status = 406),
+        });
     }
 };
 
 const editProfile = async (req, res) => {
     try {
         const response = await userRepo.editUsers(req.body, req.params);
-        res.status(200).json({
-            data: response,
-            DATA: console.log(response),
+        res.status(202).json({
+            data: response.command,
+            msg: (response.text = "data changed successfully"),
+            status: (response.status = 202),
         });
     } catch (err) {
         res.status(500).json({
