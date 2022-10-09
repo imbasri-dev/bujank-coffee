@@ -3,7 +3,7 @@ const postgresDb = require("../config/postgre");
 
 const getProduct = () => {
     return new Promise((resolve, reject) => {
-        const query = "select * from products";
+        const query = "select * from products  order by id asc";
         postgresDb.query(query, (err, result) => {
             if (err) {
                 console.log(err);
@@ -69,7 +69,7 @@ const addProduct = (body) => {
 const searchProductPromo = (queryParams) => {
     return new Promise((resolve, reject) => {
         const query =
-            "select title,price,category,size,product_img,description,promos_id from products where lower(title) like lower($1) and promos_id = $2";
+            "select * from products full join promos on products.id = promos.id where lower(title) like lower($1) and promos_id = $2 order by products.id asc";
         const values = [`%${queryParams.title}%`, `${queryParams.promos_id}`];
         postgresDb.query(query, values, (err, queryResult) => {
             if (err) {

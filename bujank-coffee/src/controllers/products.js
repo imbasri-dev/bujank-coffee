@@ -1,3 +1,4 @@
+const { response } = require("express");
 const productRepo = require("../repo/products");
 
 const get = async (req, res) => {
@@ -58,7 +59,6 @@ const edit = async (req, res) => {
 
 const searchProductPromo = async (req, res) => {
     try {
-        console.log(req.query);
         const response = await productRepo.searchProductPromo(req.query);
         res.status(200).json({
             data: response.rows,

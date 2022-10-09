@@ -2,7 +2,8 @@ const postgresDb = require("../config/postgre");
 
 const getTransaction = () => {
     return new Promise((resolve, reject) => {
-        const query = "select * from transactions";
+        const query =
+            "SELECT transactions.id,users.email,users.phones , users.address ,order_time,payment_method ,status,transaction_date ,quantity ,products.price,shipping_payment,tax , ((total*0) + (price * quantity +shipping_payment + tax)) AS total FROM transactions FULL JOIN users ON transactions.id = users.id FULL JOIN products ON transactions.id = products.id ORDER BY transactions.id asc";
         postgresDb.query(query, (err, result) => {
             if (err) {
                 console.log(err);

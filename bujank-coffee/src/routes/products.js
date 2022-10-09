@@ -10,8 +10,8 @@ const {
 } = require("../controllers/products");
 
 productsRouter.get("/product", get); //get all products
+productsRouter.get("/search", searchProductPromo);
 productsRouter.get("/:category", getProductCategory);
-productsRouter.get("/", searchProductPromo);
 productsRouter.post("/add", create);
 productsRouter.patch("/:id", edit);
 productsRouter.delete("/:id", deleted);
