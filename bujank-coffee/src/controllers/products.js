@@ -1,3 +1,4 @@
+const { response } = require("express");
 const productRepo = require("../repo/products");
 
 const get = async (req, res) => {
@@ -55,6 +56,21 @@ const edit = async (req, res) => {
         });
     }
 };
+
+const searchProductPromo = async (req, res) => {
+    try {
+        const response = await productRepo.searchProductPromo(req.query);
+        console.log(req);
+        res.status(200).json({
+            data: response.rows,
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            msg: "Internal Server Error",
+        });
+    }
+};
 const deleted = async (req, res) => {
     try {
         const response = await productRepo.deleted(req.params);
@@ -77,5 +93,6 @@ const productController = {
     create,
     edit,
     deleted,
+    searchProductPromo,
 };
 module.exports = productController;

@@ -17,7 +17,7 @@ const getProduct = () => {
 const getCategory = (params) => {
     return new Promise((resolve, reject) => {
         const query =
-            "select * from products where lower(category) = lower($1)";
+            "select * from products where lower(category) = lower($1) order by id asc";
         postgresDb.query(query, [params.category], (err, queryResult) => {
             if (err) {
                 console.log(err);
@@ -66,6 +66,21 @@ const addProduct = (body) => {
     });
 };
 
+const searchProductPromo = (queryParams) => {
+    return new Promise((resolve, reject) => {
+        const query =
+            "select title,price,category,size,product_img,description,promos_id from products where lower(title) like lower($1) and promos_id = $2";
+        const values = [`%${queryParams.title}%`, `${queryParams.promos_id}`];
+        postgresDb.query(query, values, (err, queryResult) => {
+            if (err) {
+                console.log(err);
+                return reject(err);
+            }
+            return resolve(queryResult);
+        });
+    });
+};
+
 const update = (body, params) => {
     return new Promise((resolve, reject) => {
         let query = "update products set ";
@@ -108,6 +123,7 @@ const productRepo = {
     getProduct,
     getCategory,
     addProduct,
+    searchProductPromo,
     update,
     deleted,
 };
