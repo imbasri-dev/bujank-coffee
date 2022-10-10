@@ -85,12 +85,26 @@ const deleted = async (req, res) => {
         });
     }
 };
+const productSort = async (req, res) => {
+    try {
+        const response = await productRepo.productSort(req.query);
+        res.status(200).json({
+            data: response.rows,
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            msg: "Internal Server Error",
+        });
+    }
+};
 const productController = {
     get,
     getProductCategory,
     create,
     edit,
     deleted,
+    productSort,
     searchProductPromo,
 };
 module.exports = productController;

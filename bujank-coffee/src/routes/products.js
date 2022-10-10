@@ -7,10 +7,12 @@ const {
     edit,
     deleted,
     searchProductPromo,
+    productSort,
 } = require("../controllers/products");
 
-productsRouter.get("/all", get); //get all products
+productsRouter.get("/all", get); //get all productsn
 productsRouter.get("/search", searchProductPromo);
+productsRouter.get("/sort", productSort);
 productsRouter.get("/:category", getProductCategory);
 productsRouter.post("/add", create);
 productsRouter.patch("/:id", edit);

@@ -1,6 +1,5 @@
 const postgresDb = require("../config/postgre");
 // get all user
-
 const getProduct = () => {
     return new Promise((resolve, reject) => {
         const query = "select * from products  order by id asc";
@@ -13,7 +12,6 @@ const getProduct = () => {
         });
     });
 };
-
 const getCategory = (params) => {
     return new Promise((resolve, reject) => {
         const query =
@@ -59,7 +57,7 @@ const addProduct = (body) => {
 const searchProductPromo = (queryParams) => {
     return new Promise((resolve, reject) => {
         const query =
-            "select * from products where lower(title) like lower($1) ";
+            "select * from products where lower(title) like lower($1) order by id asc ";
         const values = [`%${queryParams.title}%`];
         postgresDb.query(query, values, (err, queryResult) => {
             if (err) {
@@ -96,11 +94,38 @@ const update = (body, params) => {
             });
     });
 };
-
 const deleted = (params) => {
     return new Promise((resolve, reject) => {
         const query = "delete from products where id = $1";
         postgresDb.query(query, [params.id], (err, queryResult) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+            resolve(queryResult);
+        });
+    });
+};
+const productSort = (queryParams) => {
+    return new Promise((resolve, reject) => {
+        let query = "select * from products ";
+        if (queryParams.sort == "low") {
+            query += "order by price asc ";
+        }
+        if (queryParams.sort == "high") {
+            query += "order by price desc ";
+        }
+        if (queryParams.sort == "created_asc") {
+            query += "order by created_at asc ";
+        }
+        if (queryParams.sort == "created_desc") {
+            query += "order by created_at desc";
+        }
+        if (queryParams.sort == "favorite") {
+            query =
+                "select products.* , transactions.quantity from products inner join transactions on products.id = transactions.id  order by transactions.quantity desc";
+        }
+        postgresDb.query(query, (err, queryResult) => {
             if (err) {
                 console.log(err);
                 reject(err);
@@ -115,6 +140,7 @@ const productRepo = {
     addProduct,
     searchProductPromo,
     update,
+    productSort,
     deleted,
 };
 module.exports = productRepo;

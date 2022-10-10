@@ -15,11 +15,4 @@ userRouter.post("/signup", create);
 userRouter.patch("/:id", editProfile);
 userRouter.delete("/:id", deleted);
 
-// testing router
-// userRouter.get("/", (req, res) => {
-//     res.json({
-//         msg: "user!",
-//     });
-// });
-
 module.exports = userRouter;

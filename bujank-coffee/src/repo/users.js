@@ -52,9 +52,6 @@ const editUsers = (body, params) => {
     return new Promise((resolve, reject) => {
         let query = "update users set ";
         const values = [];
-        // {author, title, publisher}
-        // logika ini dibuat dengan mengasumsikan ada middleware validasi
-        // validasi untuk menghilangkan properti object dari body yang tidak diinginkan
         Object.keys(body).forEach((key, idx, array) => {
             if (idx === array.length - 1) {
                 query += `${key} = $${idx + 1} where id = $${idx + 2}`;
@@ -64,10 +61,6 @@ const editUsers = (body, params) => {
             query += `${key} = $${idx + 1},`;
             values.push(body[key]);
         });
-        //   res.json({
-        //     query,
-        //     values,
-        //   });
         postgresDb
             .query(query, values)
             .then((response) => {
