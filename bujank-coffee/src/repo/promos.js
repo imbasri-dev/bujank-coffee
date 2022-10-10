@@ -28,11 +28,27 @@ const getPromoId = (params) => {
 const create = (body) => {
     return new Promise((resolve, reject) => {
         const query =
-            "insert into promos (code_voucher,label,discount,valid) values (upper($1),upper($2),$3,$4)";
-        const { code_voucher, label, discount, valid } = body;
+            "insert into promos (product_id,code_voucher,label,min_price,max_price,discount,valid) values ($1,upper($2),$3,$4,$5,$6,$7)";
+        const {
+            product_id,
+            code_voucher,
+            label,
+            min_price,
+            max_price,
+            discount,
+            valid,
+        } = body;
         postgresDb.query(
             query,
-            [code_voucher, label, discount, valid],
+            [
+                product_id,
+                code_voucher,
+                label,
+                min_price,
+                max_price,
+                discount,
+                valid,
+            ],
             (err, queryResult) => {
                 if (err) {
                     console.log(err);

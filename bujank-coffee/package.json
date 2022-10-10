@@ -19,6 +19,7 @@
     },
     "homepage": "https://github.com/imbasri-dev/bujank-coffee#readme",
     "devDependencies": {
+        "dotenv": "^16.0.3",
         "eslint": "^8.24.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",

@@ -16,14 +16,16 @@ const getTransaction = () => {
 const addTransaction = (body) => {
     return new Promise((resolve, reject) => {
         const query =
-            "insert into transactions (user_id,product_id,quantity,payment_method,order_time,status,tax,shipping_payment,total) values ($1,$2,$3,$4,$5,$6,$7,$8,$9)";
+            "insert into transactions (user_id,product_id,promo_id,quantity,payment_method,order_time,status,subtotal,tax,shipping_payment,total) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)";
         const {
             user_id,
             product_id,
+            promo_id,
             quantity,
             payment_method,
             order_time,
             status,
+            subtotal,
             tax,
             shipping_payment,
             total,
@@ -33,14 +35,16 @@ const addTransaction = (body) => {
             query,
             [
                 user_id,
+                promo_id,
                 product_id,
                 quantity,
                 payment_method,
                 order_time,
                 status,
+                subtotal,
                 tax,
-                shipping_payment,
                 total,
+                shipping_payment,
             ],
             (err, queryResult) => {
                 if (err) {
@@ -79,24 +83,6 @@ const edit = (body, params) => {
     });
 };
 
-const getCategory = (params) => {
-    return new Promise((resolve, reject) => {
-        const query = `SELECT transactions.id,users.email,users.phones , users.address ,order_time,payment_method ,promos.code_voucher  ,status,transaction_date ,quantity,products.price,(transactions.quantity * (products.price * promos.discount/100)) AS discount, (products.price * transactions.quantity) AS sub_total ,shipping_payment,tax ,(price * transactions.quantity +tax + shipping_payment - (transactions.quantity * (products.price * promos.discount/100)) ) AS total
-FROM transactions
-FULL JOIN users ON transactions.id = users.id
-FULL JOIN products ON transactions.id = products.id
-FULL JOIN promos ON products.id = promos.id
-WHERE products.category = $1 AND users.id = transactions.id order by transaction_date asc `;
-        postgresDb.query(query, [params.category], (err, queryResult) => {
-            if (err) {
-                console.log(err);
-                return reject(err);
-            }
-            return resolve(queryResult);
-        });
-    });
-};
-
 const deleted = (params) => {
     return new Promise((resolve, reject) => {
         const query = "delete from transactions where id = $1";
@@ -114,7 +100,6 @@ const transactionRepo = {
     getTransaction,
     addTransaction,
     edit,
-    getCategory,
     deleted,
 };
 

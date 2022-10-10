@@ -31,7 +31,7 @@ const getCategory = (params) => {
 const addProduct = (body) => {
     return new Promise((resolve, reject) => {
         const query =
-            "insert into products (title,price,category,size,product_img,description,stock,promos_id) values ($1,$2,$3,$4,$5,$6,$7,$8)";
+            "insert into products (title,price,category,size,product_img,description,stock) values ($1,$2,$3,$4,$5,$6,$7)";
         const {
             title,
             price,
@@ -40,21 +40,11 @@ const addProduct = (body) => {
             product_img,
             description,
             stock,
-            promos_id,
         } = body;
 
         postgresDb.query(
             query,
-            [
-                title,
-                price,
-                category,
-                size,
-                product_img,
-                description,
-                stock,
-                promos_id,
-            ],
+            [title, price, category, size, product_img, description, stock],
             (err, queryResult) => {
                 if (err) {
                     console.log(err);
@@ -69,11 +59,8 @@ const addProduct = (body) => {
 const searchProductPromo = (queryParams) => {
     return new Promise((resolve, reject) => {
         const query =
-            "select * from products full join promos on products.promos_id = promos.id where lower(title) like lower($1) and lower(promos.code_voucher) like lower ($2)";
-        const values = [
-            `%${queryParams.title}%`,
-            `%${queryParams.code_voucher}%`,
-        ];
+            "select * from products where lower(title) like lower($1) ";
+        const values = [`%${queryParams.title}%`];
         postgresDb.query(query, values, (err, queryResult) => {
             if (err) {
                 console.log(err);

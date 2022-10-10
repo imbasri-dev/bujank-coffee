@@ -1,5 +1,4 @@
 const transactionRepo = require("../repo/transaction");
-
 const get = async (req, res) => {
     try {
         const response = await transactionRepo.getTransaction();
@@ -26,7 +25,6 @@ const add = async (req, res) => {
         });
     }
 };
-
 const edit = async (req, res) => {
     try {
         const respone = await transactionRepo.edit(req.body, req.params);
@@ -39,19 +37,6 @@ const edit = async (req, res) => {
         res.status(500).json({
             debug: console.log(err),
             msg: "Internal server Error",
-        });
-    }
-};
-const getTransactionCategory = async (req, res) => {
-    console.log(req.params);
-    try {
-        const response = await transactionRepo.getCategory(req.params);
-        res.status(200).json({
-            data: response.rows,
-        });
-    } catch (err) {
-        res.status(500).json({
-            msg: "Internal Server Error",
         });
     }
 };
@@ -72,7 +57,6 @@ const transactionController = {
     get,
     add,
     edit,
-    getTransactionCategory,
     deleted,
 };
 module.exports = transactionController;
