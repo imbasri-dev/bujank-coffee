@@ -11,6 +11,18 @@ const get = async (req, res) => {
         });
     }
 };
+const getId = async (req, res) => {
+    try {
+        const response = await transactionRepo.transactionId(req.params);
+        res.status(200).json({
+            data: response.rows,
+        });
+    } catch (err) {
+        res.status(500).json({
+            msg: "Internal Server Error",
+        });
+    }
+};
 
 const add = async (req, res) => {
     try {
@@ -55,6 +67,7 @@ const deleted = async (req, res) => {
 };
 const transactionController = {
     get,
+    getId,
     add,
     edit,
     deleted,

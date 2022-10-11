@@ -30,9 +30,10 @@ const create = async (req, res) => {
         const response = await productRepo.addProduct(req.body);
         res.status(201).json({
             // debug: console.log(response),
-            data: response.command,
+            // data: response.command,
+            insert: (response.text = req.body),
             msg: (response.text = "Create data successful"),
-            status: (response.status = 201),
+            // status: (response.status = 201),
         });
     } catch (err) {
         res.status(500).json({
