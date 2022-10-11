@@ -123,7 +123,7 @@ const productSort = (queryParams) => {
         }
         if (queryParams.sort == "favorite") {
             query =
-                "select products.* , transactions.quantity from products inner join transactions on products.id = transactions.id  order by transactions.quantity desc";
+                "select products.* , transactions.quantity from products inner join transactions on products.id = transactions.product_id order by transactions.quantity desc";
         }
         postgresDb.query(query, (err, queryResult) => {
             if (err) {

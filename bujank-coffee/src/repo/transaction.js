@@ -3,7 +3,7 @@ const postgresDb = require("../config/postgre");
 const getTransaction = () => {
     return new Promise((resolve, reject) => {
         const query =
-            "SELECT transactions.id,users.address,users.phones ,products.title AS name_product,promos.code_voucher,products.price ,quantity,subtotal,status,tax,shipping_payment , (subtotal+tax+shipping_payment) AS total ,payment_method ,transaction_date FROM transactions FULL JOIN users ON transactions.id = users.id FULL JOIN products ON transactions.id = products.id FULL JOIN promos ON products.id = promos.id WHERE transactions.id = products.id  order by transactions.id  asc";
+            "SELECT transactions.id,users.displayname ,promos.code_voucher ,users.address,users.phones promos,products.title AS name_product,products.price ,quantity,subtotal,status,tax,shipping_payment , (subtotal+tax+shipping_payment)AS total ,payment_method ,transaction_date FROM transactions  FULL JOIN users ON transactions.user_id  = users.id FULL JOIN products ON transactions.product_id  = products.id FULL JOIN promos ON transactions.promo_id  = promos.id WHERE transactions.user_id  = users.id order by transactions asc";
         postgresDb.query(query, (err, result) => {
             if (err) {
                 console.log(err);
@@ -60,7 +60,7 @@ const addTransaction = (body) => {
 const transactionId = (params) => {
     return new Promise((resolve, reject) => {
         const query =
-            "SELECT transactions.id,users.displayName,users.address,users.phones ,products.title AS name_product,products.price ,quantity,subtotal,status,tax,shipping_payment , (subtotal+tax+shipping_payment) AS total ,payment_method,promos.code_voucher ,transaction_date FROM transactions FULL JOIN users ON transactions.id = users.id FULL JOIN products ON transactions.id = products.id FULL JOIN promos ON products.id = promos.id WHERE transactions.id  = $1";
+            "SELECT transactions.id,users.displayName,users.address,users.phones ,products.title AS name_product,products.price ,quantity,subtotal,status,tax,shipping_payment , (subtotal+tax+shipping_payment) AS total ,payment_method,promos.code_voucher ,transaction_date FROM transactions inner JOIN users ON transactions.user_id  = users.id INNER JOIN products ON transactions.product_id  = products.id FULL JOIN promos ON transactions.promo_id  = promos.id WHERE transactions.id  = $1";
         postgresDb.query(query, [params.id], (err, result) => {
             if (err) {
                 console.log(err);
